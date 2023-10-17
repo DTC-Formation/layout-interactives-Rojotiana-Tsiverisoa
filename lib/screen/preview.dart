@@ -12,6 +12,7 @@ class _PreviewState extends State<Preview> {
   String firstnameController = "...";
   String lastnameController = "";
   String sexeController = "...";
+  String birthdayController = "";
   double sizeController = 0;
 
   void updateFirstname(String newValue) {
@@ -35,6 +36,12 @@ class _PreviewState extends State<Preview> {
   void updateSize(double newValue) {
     setState(() {
       sizeController = newValue;
+    });
+  }
+
+  void updateBirthday(String newValue) {
+    setState(() {
+      birthdayController = newValue;
     });
   }
 
@@ -236,6 +243,7 @@ class _PreviewState extends State<Preview> {
                 updateLastname: updateLastname,
                 updateSexe: updateSexe,
                 updateSize: updateSize,
+                updateBirthday: updateBirthday,
               ),
             ],
           ),

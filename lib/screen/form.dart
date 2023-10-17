@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:exercises/widgets/datepicker.dart';
 
 enum SexeChoice { male, female }
 
@@ -6,12 +7,14 @@ class MyForm extends StatefulWidget {
   final void Function(String) updateFirstname;
   final void Function(String) updateLastname;
   final void Function(String) updateSexe;
+  final void Function(String) updateBirthday;
   final void Function(double) updateSize;
   const MyForm({
     super.key,
     required this.updateFirstname,
     required this.updateLastname,
     required this.updateSexe,
+    required this.updateBirthday,
     required this.updateSize,
   });
 
@@ -22,9 +25,16 @@ class MyForm extends StatefulWidget {
 class _MyFormState extends State<MyForm> {
   var firstnameController = TextEditingController();
   var lastnameController = TextEditingController();
+  String birthdayController = "";
   SexeChoice? _sexe = SexeChoice.male;
   String sexeController = 'male';
   double sizeController = 0;
+
+  void updateDatePicker(String newValue) {
+    setState(() {
+      birthdayController = newValue;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +43,7 @@ class _MyFormState extends State<MyForm> {
       widget.updateLastname(lastnameController.text);
       widget.updateSexe(sexeController);
       widget.updateSize(sizeController);
+      widget.updateBirthday(birthdayController);
     }
 
     return Column(
@@ -115,6 +126,10 @@ class _MyFormState extends State<MyForm> {
           ],
         ),
         // ************** Date de naissance **************
+        MyDatePicker(
+          updateDatePicker: updateDatePicker,
+        ),
+
         // ************** Loisirs **************
         Align(
           alignment: Alignment.center,
