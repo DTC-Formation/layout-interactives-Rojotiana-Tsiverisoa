@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:exercises/widgets/datepicker.dart';
+import 'package:exercises/helpers/helpers.dart';
 
 enum SexeChoice { male, female }
 
@@ -8,14 +9,17 @@ class MyForm extends StatefulWidget {
   final void Function(String) updateLastname;
   final void Function(String) updateSexe;
   final void Function(String) updateBirthday;
-  final void Function(double) updateSize;
+  final void Function(double) updateHeight;
+  final void Function(String) updateWeight;
+
   const MyForm({
     super.key,
     required this.updateFirstname,
     required this.updateLastname,
     required this.updateSexe,
     required this.updateBirthday,
-    required this.updateSize,
+    required this.updateHeight,
+    required this.updateWeight,
   });
 
   @override
@@ -23,12 +27,14 @@ class MyForm extends StatefulWidget {
 }
 
 class _MyFormState extends State<MyForm> {
+  Helper helper = Helper();
   var firstnameController = TextEditingController();
   var lastnameController = TextEditingController();
   String birthdayController = "";
   SexeChoice? _sexe = SexeChoice.male;
   String sexeController = 'male';
-  double sizeController = 0;
+  double heightController = 0;
+  var weightController = TextEditingController();
 
   void updateDatePicker(String newValue) {
     setState(() {
@@ -42,8 +48,9 @@ class _MyFormState extends State<MyForm> {
       widget.updateFirstname(firstnameController.text);
       widget.updateLastname(lastnameController.text);
       widget.updateSexe(sexeController);
-      widget.updateSize(sizeController);
+      widget.updateHeight(heightController);
       widget.updateBirthday(birthdayController);
+      widget.updateWeight(weightController.text);
     }
 
     return Column(
@@ -113,21 +120,42 @@ class _MyFormState extends State<MyForm> {
           children: [
             const Text('Taille (cm)'),
             Slider(
-              value: sizeController,
+              value: heightController,
               max: 200,
               divisions: 5,
-              label: sizeController.round().toString(),
+              label: heightController.round().toString(),
               onChanged: (double value) {
                 setState(() {
-                  sizeController = value;
+                  heightController = value;
                 });
               },
             ),
           ],
         ),
         // ************** Date de naissance **************
-        MyDatePicker(
-          updateDatePicker: updateDatePicker,
+        Row(
+          children: [
+            const Text('Date de naissance'),
+            MyDatePicker(
+              updateDatePicker: updateDatePicker,
+            ),
+            Text(birthdayController),
+          ],
+        ),
+        const Padding(
+          padding: EdgeInsets.only(bottom: 10),
+        ),
+        // ************** Poids **************
+        TextField(
+          decoration: const InputDecoration(
+            border: UnderlineInputBorder(),
+            labelText: 'Poids (Kg)',
+          ),
+          controller: weightController,
+          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        ),
+        const Padding(
+          padding: EdgeInsets.only(bottom: 10),
         ),
 
         // ************** Loisirs **************

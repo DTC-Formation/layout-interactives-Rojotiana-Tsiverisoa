@@ -16,7 +16,9 @@ class _PreviewState extends State<Preview> {
   String sexeController = "...";
   String birthdayController = "";
   String age = "";
-  double sizeController = 0;
+  double heightController = 0;
+  String weightController = "";
+  double bmiController = 0;
 
   void updateFirstname(String newValue) {
     setState(() {
@@ -36,9 +38,9 @@ class _PreviewState extends State<Preview> {
     });
   }
 
-  void updateSize(double newValue) {
+  void updateHeight(double newValue) {
     setState(() {
-      sizeController = newValue;
+      heightController = newValue;
     });
   }
 
@@ -46,6 +48,14 @@ class _PreviewState extends State<Preview> {
     setState(() {
       birthdayController = newValue;
       age = "${helper.ageCalculator(birthdayController).toString()} ans";
+    });
+  }
+
+  void updateWeight(String newValue) {
+    setState(() {
+      weightController = newValue;
+      bmiController = helper.bmiCalculator(
+          heightController, (double.parse(weightController)));
     });
   }
 
@@ -163,7 +173,7 @@ class _PreviewState extends State<Preview> {
                             ),
                             children: [
                               TextSpan(
-                                text: '$sizeController (cm)',
+                                text: '$heightController (cm)',
                               ),
                             ],
                           ),
@@ -200,15 +210,15 @@ class _PreviewState extends State<Preview> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: RichText(
-                  text: const TextSpan(
-                    text: 'BMI',
-                    style: TextStyle(
+                  text: TextSpan(
+                    text: 'BMI: ',
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
                     children: [
                       TextSpan(
-                        text: '....',
+                        text: bmiController.toStringAsFixed(2),
                       ),
                     ],
                   ),
@@ -246,8 +256,9 @@ class _PreviewState extends State<Preview> {
                 updateFirstname: updateFirstname,
                 updateLastname: updateLastname,
                 updateSexe: updateSexe,
-                updateSize: updateSize,
+                updateHeight: updateHeight,
                 updateBirthday: updateBirthday,
+                updateWeight: updateWeight,
               ),
             ],
           ),
