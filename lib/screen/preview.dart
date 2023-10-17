@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './form.dart';
+import 'package:exercises/helpers/helpers.dart';
 
 class Preview extends StatefulWidget {
   const Preview({super.key});
@@ -9,10 +10,12 @@ class Preview extends StatefulWidget {
 }
 
 class _PreviewState extends State<Preview> {
+  Helper helper = Helper();
   String firstnameController = "...";
   String lastnameController = "";
   String sexeController = "...";
   String birthdayController = "";
+  String age = "";
   double sizeController = 0;
 
   void updateFirstname(String newValue) {
@@ -42,6 +45,7 @@ class _PreviewState extends State<Preview> {
   void updateBirthday(String newValue) {
     setState(() {
       birthdayController = newValue;
+      age = "${helper.ageCalculator(birthdayController).toString()} ans";
     });
   }
 
@@ -115,15 +119,15 @@ class _PreviewState extends State<Preview> {
                     Column(
                       children: [
                         RichText(
-                          text: const TextSpan(
+                          text: TextSpan(
                             text: 'Age: ',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
                             ),
                             children: [
                               TextSpan(
-                                text: '....',
+                                text: age,
                               ),
                             ],
                           ),
