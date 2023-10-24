@@ -11,6 +11,7 @@ class MyForm extends StatefulWidget {
   final void Function(String) updateBirthday;
   final void Function(double) updateHeight;
   final void Function(String) updateWeight;
+  final void Function(List<String>) updateTechnos;
 
   const MyForm({
     super.key,
@@ -20,6 +21,7 @@ class MyForm extends StatefulWidget {
     required this.updateBirthday,
     required this.updateHeight,
     required this.updateWeight,
+    required this.updateTechnos,
   });
 
   @override
@@ -42,6 +44,19 @@ class _MyFormState extends State<MyForm> {
     });
   }
 
+  bool flutterIsChecked = false;
+  bool javascriptIsChecked = false;
+  bool phpIsChecked = false;
+
+  List<String> technoController = [];
+
+  void updateCheckedTechnos() {
+    technoController.clear();
+    if (flutterIsChecked) technoController.add("Flutter");
+    if (javascriptIsChecked) technoController.add("Javascript");
+    if (phpIsChecked) technoController.add("PHP");
+  }
+
   @override
   Widget build(BuildContext context) {
     void onSubmit() {
@@ -51,6 +66,7 @@ class _MyFormState extends State<MyForm> {
       widget.updateHeight(heightController);
       widget.updateBirthday(birthdayController);
       widget.updateWeight(weightController.text);
+      widget.updateTechnos(technoController);
     }
 
     return Column(
@@ -159,6 +175,70 @@ class _MyFormState extends State<MyForm> {
         ),
 
         // ************** Loisirs **************
+
+        // ************** Technos **************
+        Column(
+          children: [
+            const Align(
+              alignment: Alignment.topLeft,
+              child: Text('Technos'),
+            ),
+            Align(
+              alignment: Alignment.topLeft,
+              child: Row(
+                children: [
+                  Checkbox(
+                    checkColor: Colors.white,
+                    value: flutterIsChecked,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        flutterIsChecked = value!;
+                        updateCheckedTechnos();
+                      });
+                    },
+                  ),
+                  const Text('Flutter'),
+                ],
+              ),
+            ),
+            Align(
+              alignment: Alignment.topLeft,
+              child: Row(
+                children: [
+                  Checkbox(
+                    checkColor: Colors.white,
+                    value: javascriptIsChecked,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        javascriptIsChecked = value!;
+                        updateCheckedTechnos();
+                      });
+                    },
+                  ),
+                  const Text('Javascript'),
+                ],
+              ),
+            ),
+            Align(
+              alignment: Alignment.topLeft,
+              child: Row(
+                children: [
+                  Checkbox(
+                    checkColor: Colors.white,
+                    value: phpIsChecked,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        phpIsChecked = value!;
+                        updateCheckedTechnos();
+                      });
+                    },
+                  ),
+                  const Text('PHP'),
+                ],
+              ),
+            ),
+          ],
+        ),
         Align(
           alignment: Alignment.center,
           child: OutlinedButton(

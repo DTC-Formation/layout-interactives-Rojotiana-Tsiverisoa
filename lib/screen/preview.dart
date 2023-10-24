@@ -19,6 +19,7 @@ class _PreviewState extends State<Preview> {
   double heightController = 0;
   String weightController = "";
   double bmiController = 0;
+  List<String> technoController = [''];
 
   void updateFirstname(String newValue) {
     setState(() {
@@ -56,6 +57,12 @@ class _PreviewState extends State<Preview> {
       weightController = newValue;
       bmiController = helper.bmiCalculator(
           heightController, (double.parse(weightController)));
+    });
+  }
+
+  void updateTechnos(List<String> newValue) {
+    setState(() {
+      technoController = newValue;
     });
   }
 
@@ -188,15 +195,15 @@ class _PreviewState extends State<Preview> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: RichText(
-                  text: const TextSpan(
+                  text: TextSpan(
                     text: 'Liste des technologies: ',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
                     children: [
                       TextSpan(
-                        text: '....',
+                        text: technoController.join(', '),
                       ),
                     ],
                   ),
@@ -259,6 +266,7 @@ class _PreviewState extends State<Preview> {
                 updateHeight: updateHeight,
                 updateBirthday: updateBirthday,
                 updateWeight: updateWeight,
+                updateTechnos: updateTechnos,
               ),
             ],
           ),
