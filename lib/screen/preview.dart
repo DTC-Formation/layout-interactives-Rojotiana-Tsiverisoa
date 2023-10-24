@@ -20,6 +20,7 @@ class _PreviewState extends State<Preview> {
   String weightController = "";
   double bmiController = 0;
   List<String> technoController = [''];
+  List<String> hobbyController = [''];
 
   void updateFirstname(String newValue) {
     setState(() {
@@ -63,6 +64,12 @@ class _PreviewState extends State<Preview> {
   void updateTechnos(List<String> newValue) {
     setState(() {
       technoController = newValue;
+    });
+  }
+
+  void updateHobbies(List<String> newValue) {
+    setState(() {
+      hobbyController = newValue;
     });
   }
 
@@ -239,15 +246,15 @@ class _PreviewState extends State<Preview> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: RichText(
-                  text: const TextSpan(
+                  text: TextSpan(
                     text: 'Loisirs: ',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
                     children: [
                       TextSpan(
-                        text: '....',
+                        text: hobbyController.join(', '),
                       ),
                     ],
                   ),
@@ -267,6 +274,7 @@ class _PreviewState extends State<Preview> {
                 updateBirthday: updateBirthday,
                 updateWeight: updateWeight,
                 updateTechnos: updateTechnos,
+                updateHobbies: updateHobbies,
               ),
             ],
           ),

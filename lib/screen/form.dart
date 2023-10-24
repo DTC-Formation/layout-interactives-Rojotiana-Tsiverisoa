@@ -12,6 +12,7 @@ class MyForm extends StatefulWidget {
   final void Function(double) updateHeight;
   final void Function(String) updateWeight;
   final void Function(List<String>) updateTechnos;
+  final void Function(List<String>) updateHobbies;
 
   const MyForm({
     super.key,
@@ -22,6 +23,7 @@ class MyForm extends StatefulWidget {
     required this.updateHeight,
     required this.updateWeight,
     required this.updateTechnos,
+    required this.updateHobbies,
   });
 
   @override
@@ -57,6 +59,19 @@ class _MyFormState extends State<MyForm> {
     if (phpIsChecked) technoController.add("PHP");
   }
 
+  bool swimmingIsChecked = false;
+  bool watchingTvIsChecked = false;
+  bool gamingIsChecked = false;
+
+  List<String> hobbiesController = [];
+
+  void updateCheckedHobbies() {
+    hobbiesController.clear();
+    if (swimmingIsChecked) hobbiesController.add("Nager");
+    if (watchingTvIsChecked) hobbiesController.add("Regarder la télé");
+    if (gamingIsChecked) hobbiesController.add("Jouer aux jeux vidéo");
+  }
+
   @override
   Widget build(BuildContext context) {
     void onSubmit() {
@@ -67,6 +82,7 @@ class _MyFormState extends State<MyForm> {
       widget.updateBirthday(birthdayController);
       widget.updateWeight(weightController.text);
       widget.updateTechnos(technoController);
+      widget.updateHobbies(hobbiesController);
     }
 
     return Column(
@@ -175,6 +191,68 @@ class _MyFormState extends State<MyForm> {
         ),
 
         // ************** Loisirs **************
+        Column(
+          children: [
+            const Align(
+              alignment: Alignment.topLeft,
+              child: Text('Loisirs'),
+            ),
+            Align(
+              alignment: Alignment.topLeft,
+              child: Row(
+                children: [
+                  Checkbox(
+                    checkColor: Colors.white,
+                    value: swimmingIsChecked,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        swimmingIsChecked = value!;
+                        updateCheckedHobbies();
+                      });
+                    },
+                  ),
+                  const Text('Nager'),
+                ],
+              ),
+            ),
+            Align(
+              alignment: Alignment.topLeft,
+              child: Row(
+                children: [
+                  Checkbox(
+                    checkColor: Colors.white,
+                    value: watchingTvIsChecked,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        watchingTvIsChecked = value!;
+                        updateCheckedHobbies();
+                      });
+                    },
+                  ),
+                  const Text('Regarder la télé'),
+                ],
+              ),
+            ),
+            Align(
+              alignment: Alignment.topLeft,
+              child: Row(
+                children: [
+                  Checkbox(
+                    checkColor: Colors.white,
+                    value: gamingIsChecked,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        gamingIsChecked = value!;
+                        updateCheckedHobbies();
+                      });
+                    },
+                  ),
+                  const Text('Jouer aux jeux vidéo'),
+                ],
+              ),
+            ),
+          ],
+        ),
 
         // ************** Technos **************
         Column(
@@ -245,7 +323,7 @@ class _MyFormState extends State<MyForm> {
             onPressed: onSubmit,
             child: const Text('Valider'),
           ),
-        )
+        ),
       ],
     );
   }
