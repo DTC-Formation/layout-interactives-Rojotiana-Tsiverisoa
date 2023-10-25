@@ -16,11 +16,11 @@ class Preview extends StatefulWidget {
 
 class _PreviewState extends State<Preview> {
   Helper helper = Helper();
-  String firstnameController = "...";
-  String lastnameController = "";
-  String sexeController = "...";
+  String firstnameController = "John";
+  String lastnameController = "Doe";
+  String sexeController = "Homme";
   String birthdayController = "";
-  String age = "";
+  String age = "45";
   double heightController = 0;
   String weightController = "";
   double bmiController = 0;
@@ -146,6 +146,42 @@ class _PreviewState extends State<Preview> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+
+    customInput(String title, String value) {
+      var customInput = Align(
+        alignment: Alignment.centerLeft,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: Colors.black,
+              ),
+            ),
+            Container(
+              width: size.width,
+              height: 45,
+              padding: const EdgeInsets.only(top: 10, left: 5),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  width: 1,
+                  color: const Color.fromARGB(118, 80, 80, 80),
+                ),
+                borderRadius: const BorderRadius.all(Radius.circular(5)),
+              ),
+              child: Text(value),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(bottom: 10),
+            ),
+          ],
+        ),
+      );
+      return customInput;
+    }
 
     return Column(
       children: [
@@ -348,160 +384,21 @@ class _PreviewState extends State<Preview> {
           padding: const EdgeInsets.all(10),
           child: Column(
             children: [
-              // ************** Fullname **************
-              Align(
-                alignment: Alignment.centerLeft,
-                child: RichText(
-                  text: TextSpan(
-                    text: 'Nom et prénom: ',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: "$firstnameController $lastnameController",
-                      ),
-                    ],
-                  ),
-                ),
+              customInput('Nom', firstnameController),
+              customInput('Prénom', lastnameController),
+              customInput('Age', age),
+              customInput('Sexe', sexeController),
+              customInput('Taille (cm)', heightController.toString()),
+              customInput(
+                'Liste des technologies',
+                technoController.join(', '),
               ),
+              customInput('BMI', bmiController.toStringAsFixed(2)),
+              customInput('Loisirs', hobbyController.join(', ')),
               const Padding(
                 padding: EdgeInsets.only(bottom: 10),
               ),
-
-              // ************** Age - Sexe - Taille **************
-              Container(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      children: [
-                        RichText(
-                          text: TextSpan(
-                            text: 'Age: ',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                            children: [
-                              TextSpan(
-                                text: age,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        RichText(
-                          text: TextSpan(
-                            text: 'Sexe: ',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                            children: [
-                              TextSpan(
-                                text: sexeController,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        RichText(
-                          text: TextSpan(
-                            text: 'Taille: ',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                            children: [
-                              TextSpan(
-                                text: '$heightController (cm)',
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-
-              // ************** Liste des technologies **************
-              Align(
-                alignment: Alignment.centerLeft,
-                child: RichText(
-                  text: TextSpan(
-                    text: 'Liste des technologies: ',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: technoController.join(', '),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(bottom: 10),
-              ),
-
-              // ************** BMI **************
-              Align(
-                alignment: Alignment.centerLeft,
-                child: RichText(
-                  text: TextSpan(
-                    text: 'BMI: ',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: bmiController.toStringAsFixed(2),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(bottom: 10),
-              ),
-
-              // ************** Loisirs **************
-              Align(
-                alignment: Alignment.centerLeft,
-                child: RichText(
-                  text: TextSpan(
-                    text: 'Loisirs: ',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: hobbyController.join(', '),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(bottom: 10),
-              ),
-
               const Divider(),
-
               MyForm(
                 updateFirstname: updateFirstname,
                 updateLastname: updateLastname,

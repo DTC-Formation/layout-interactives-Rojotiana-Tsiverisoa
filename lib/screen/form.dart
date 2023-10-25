@@ -36,7 +36,7 @@ class _MyFormState extends State<MyForm> {
   var lastnameController = TextEditingController();
   String birthdayController = "";
   SexeChoice? _sexe = SexeChoice.male;
-  String sexeController = 'male';
+  String sexeController = 'Homme';
   double heightController = 0;
   var weightController = TextEditingController();
 
@@ -123,24 +123,24 @@ class _MyFormState extends State<MyForm> {
         // children: [
         const Text('Sexe'),
         RadioListTile<SexeChoice>(
-          title: const Text('Male'),
+          title: const Text('Homme'),
           value: SexeChoice.male,
           groupValue: _sexe,
           onChanged: (SexeChoice? value) {
             setState(() {
               _sexe = value;
-              sexeController = 'male';
+              sexeController = 'Homme';
             });
           },
         ),
         RadioListTile<SexeChoice>(
-          title: const Text('Female'),
+          title: const Text('Femme'),
           value: SexeChoice.female,
           groupValue: _sexe,
           onChanged: (SexeChoice? value) {
             setState(() {
               _sexe = value;
-              sexeController = 'female';
+              sexeController = 'Femme';
             });
           },
         ),
