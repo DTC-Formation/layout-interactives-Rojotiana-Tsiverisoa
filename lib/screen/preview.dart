@@ -183,6 +183,73 @@ class _PreviewState extends State<Preview> {
       return customInput;
     }
 
+    takePictureButton(var action1, var action2) {
+      var button = ElevatedButton(
+        onPressed: () {
+          showModalBottomSheet<void>(
+            context: context,
+            builder: (BuildContext context) {
+              return SizedBox(
+                height: 170,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      const Padding(
+                        padding: EdgeInsets.only(bottom: 20),
+                        child: Text(
+                          'Pick image from',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                            onPressed: action1,
+                            child: const Row(
+                              children: [
+                                Icon(Icons.image),
+                                Text('Gallery'),
+                              ],
+                            ),
+                          ),
+                          const Padding(
+                              padding: EdgeInsets.only(right: 10, left: 10),
+                              child: Text('Or')),
+                          ElevatedButton(
+                            onPressed: action2,
+                            child: const Row(
+                              children: [
+                                Icon(Icons.photo_camera),
+                                Text('Camera'),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        },
+        style: ElevatedButton.styleFrom(
+          shape: const CircleBorder(),
+          padding: const EdgeInsets.all(5),
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+        ),
+        child: const Icon(
+          Icons.photo_camera,
+        ),
+      );
+
+      return button;
+    }
+
     return Column(
       children: [
         Stack(
@@ -210,70 +277,11 @@ class _PreviewState extends State<Preview> {
                 Positioned(
                   right: 0,
                   bottom: 10,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      showModalBottomSheet<void>(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return SizedBox(
-                            height: 170,
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  const Padding(
-                                    padding: EdgeInsets.only(bottom: 20),
-                                    child: Text(
-                                      'Pick image from',
-                                      style: TextStyle(fontSize: 18),
-                                    ),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      ElevatedButton(
-                                        onPressed: _pickCoverImageFromGallery,
-                                        child: const Row(
-                                          children: [
-                                            Icon(Icons.image),
-                                            Text('Gallery'),
-                                          ],
-                                        ),
-                                      ),
-                                      const Padding(
-                                          padding: EdgeInsets.only(
-                                              right: 10, left: 10),
-                                          child: Text('Or')),
-                                      ElevatedButton(
-                                        onPressed: _pickCoverImageFromCamera,
-                                        child: const Row(
-                                          children: [
-                                            Icon(Icons.photo_camera),
-                                            Text('Camera'),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: const CircleBorder(),
-                      padding: const EdgeInsets.all(5),
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.black,
-                    ),
-                    child: const Icon(
-                      Icons.photo_camera,
-                    ),
+                  child: takePictureButton(
+                    _pickCoverImageFromGallery,
+                    _pickCoverImageFromCamera,
                   ),
-                )
+                ),
               ],
             ),
             Padding(
@@ -305,71 +313,9 @@ class _PreviewState extends State<Preview> {
                         ),
                   Padding(
                     padding: const EdgeInsets.only(top: 95, left: 80),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        showModalBottomSheet<void>(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return SizedBox(
-                              height: 170,
-                              child: Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    const Padding(
-                                      padding: EdgeInsets.only(bottom: 20),
-                                      child: Text(
-                                        'Pick image from',
-                                        style: TextStyle(fontSize: 18),
-                                      ),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        ElevatedButton(
-                                          onPressed:
-                                              _pickProfileImageFromGallery,
-                                          child: const Row(
-                                            children: [
-                                              Icon(Icons.image),
-                                              Text('Gallery'),
-                                            ],
-                                          ),
-                                        ),
-                                        const Padding(
-                                            padding: EdgeInsets.only(
-                                                right: 10, left: 10),
-                                            child: Text('Or')),
-                                        ElevatedButton(
-                                          onPressed:
-                                              _pickProfileImageFromCamera,
-                                          child: const Row(
-                                            children: [
-                                              Icon(Icons.photo_camera),
-                                              Text('Camera'),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        padding: const EdgeInsets.all(5),
-                        backgroundColor: Colors.white,
-                        foregroundColor: Colors.black,
-                      ),
-                      child: const Icon(
-                        Icons.photo_camera,
-                      ),
+                    child: takePictureButton(
+                      _pickProfileImageFromGallery,
+                      _pickProfileImageFromCamera,
                     ),
                   ),
                 ],
