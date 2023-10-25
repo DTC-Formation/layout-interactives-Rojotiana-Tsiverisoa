@@ -78,26 +78,48 @@ class _PreviewState extends State<Preview> {
     });
   }
 
-  File? _selectedImage;
+  File? _selectedProfileImage, _selectedCoverImage;
 
-  Future _pickImageFromGallery() async {
+  Future _pickProfileImageFromGallery() async {
     final returnedImage =
         await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (returnedImage == null) return;
     setState(() {
-      _selectedImage = File(returnedImage.path);
+      _selectedProfileImage = File(returnedImage.path);
       Navigator.pop(context);
     });
   }
 
-  Future _pickImageFromCamera() async {
+  Future _pickCoverImageFromGallery() async {
+    final returnedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (returnedImage == null) return;
+    setState(() {
+      _selectedCoverImage = File(returnedImage.path);
+      Navigator.pop(context);
+    });
+  }
+
+  Future _pickProfileImageFromCamera() async {
     final returnedImage =
         await ImagePicker().pickImage(source: ImageSource.camera);
 
     if (returnedImage == null) return;
     setState(() {
-      _selectedImage = File(returnedImage.path);
+      _selectedProfileImage = File(returnedImage.path);
+      Navigator.pop(context);
+    });
+  }
+
+  Future _pickCoverImageFromCamera() async {
+    final returnedImage =
+        await ImagePicker().pickImage(source: ImageSource.camera);
+
+    if (returnedImage == null) return;
+    setState(() {
+      _selectedCoverImage = File(returnedImage.path);
       Navigator.pop(context);
     });
   }
@@ -129,40 +151,192 @@ class _PreviewState extends State<Preview> {
       children: [
         Stack(
           children: [
-            SizedBox(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(2),
-                child: Image.network(
-                  'https://images.pexels.com/photos/18096084/pexels-photo-18096084/free-photo-of-homme-mains-appareil-photo-photographe.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-                  width: size.width,
-                  height: 250,
-                  fit: BoxFit.cover,
+            Stack(
+              children: [
+                SizedBox(
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(2),
+                      child: _selectedCoverImage != null
+                          ? Image.file(
+                              _selectedCoverImage!,
+                              width: size.width,
+                              height: 220,
+                              fit: BoxFit.cover,
+                            )
+                          : Image.network(
+                              'https://images.pexels.com/photos/18096084/pexels-photo-18096084/free-photo-of-homme-mains-appareil-photo-photographe.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+                              width: size.width,
+                              height: 220,
+                              fit: BoxFit.cover,
+                            )),
                 ),
-              ),
+                Positioned(
+                  right: 0,
+                  bottom: 10,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      showModalBottomSheet<void>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return SizedBox(
+                            height: 170,
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  const Padding(
+                                    padding: EdgeInsets.only(bottom: 20),
+                                    child: Text(
+                                      'Pick image from',
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      ElevatedButton(
+                                        onPressed: _pickCoverImageFromGallery,
+                                        child: const Row(
+                                          children: [
+                                            Icon(Icons.image),
+                                            Text('Gallery'),
+                                          ],
+                                        ),
+                                      ),
+                                      const Padding(
+                                          padding: EdgeInsets.only(
+                                              right: 10, left: 10),
+                                          child: Text('Or')),
+                                      ElevatedButton(
+                                        onPressed: _pickCoverImageFromCamera,
+                                        child: const Row(
+                                          children: [
+                                            Icon(Icons.photo_camera),
+                                            Text('Camera'),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: const CircleBorder(),
+                      padding: const EdgeInsets.all(5),
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.black,
+                    ),
+                    child: const Icon(
+                      Icons.photo_camera,
+                    ),
+                  ),
+                )
+              ],
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 50),
-              child: SizedBox(
-                width: 150,
-                height: 150,
-                child: _selectedImage != null
-                    ? CircleAvatar(
-                        child: SizedBox(
-                        width: 150,
-                        height: 150,
-                        child: ClipOval(
-                          child: Image.file(
-                            _selectedImage!,
-                            width: size.width,
-                            fit: BoxFit.cover,
+              padding: const EdgeInsets.only(top: 140, left: 10),
+              child: Stack(
+                children: [
+                  _selectedProfileImage != null
+                      ? SizedBox(
+                          width: 135,
+                          height: 135,
+                          child: CircleAvatar(
+                            child: ClipOval(
+                              child: Image.file(
+                                _selectedProfileImage!,
+                                width: size.width,
+                                height: size.height,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        )
+                      : const SizedBox(
+                          width: 135,
+                          height: 135,
+                          child: CircleAvatar(
+                            backgroundImage: NetworkImage(
+                              'https://images.pexels.com/photos/18250682/pexels-photo-18250682/free-photo-of-studio-portrait.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+                            ),
                           ),
                         ),
-                      ))
-                    : const CircleAvatar(
-                        backgroundImage: NetworkImage(
-                          'https://images.pexels.com/photos/18250682/pexels-photo-18250682/free-photo-of-studio-portrait.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-                        ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 95, left: 80),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        showModalBottomSheet<void>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return SizedBox(
+                              height: 170,
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    const Padding(
+                                      padding: EdgeInsets.only(bottom: 20),
+                                      child: Text(
+                                        'Pick image from',
+                                        style: TextStyle(fontSize: 18),
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        ElevatedButton(
+                                          onPressed:
+                                              _pickProfileImageFromGallery,
+                                          child: const Row(
+                                            children: [
+                                              Icon(Icons.image),
+                                              Text('Gallery'),
+                                            ],
+                                          ),
+                                        ),
+                                        const Padding(
+                                            padding: EdgeInsets.only(
+                                                right: 10, left: 10),
+                                            child: Text('Or')),
+                                        ElevatedButton(
+                                          onPressed:
+                                              _pickProfileImageFromCamera,
+                                          child: const Row(
+                                            children: [
+                                              Icon(Icons.photo_camera),
+                                              Text('Camera'),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: const CircleBorder(),
+                        padding: const EdgeInsets.all(5),
+                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.black,
                       ),
+                      child: const Icon(
+                        Icons.photo_camera,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -337,62 +511,6 @@ class _PreviewState extends State<Preview> {
                 updateWeight: updateWeight,
                 updateTechnos: updateTechnos,
                 updateHobbies: updateHobbies,
-              ),
-
-              OutlinedButton(
-                onPressed: () {
-                  showModalBottomSheet<void>(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return SizedBox(
-                        height: 170,
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              const Padding(
-                                padding: EdgeInsets.only(bottom: 20),
-                                child: Text(
-                                  'Pick image from',
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  ElevatedButton(
-                                    onPressed: _pickImageFromGallery,
-                                    child: const Row(
-                                      children: [
-                                        Icon(Icons.image),
-                                        Text('Gallery'),
-                                      ],
-                                    ),
-                                  ),
-                                  const Padding(
-                                      padding:
-                                          EdgeInsets.only(right: 10, left: 10),
-                                      child: Text('Or')),
-                                  ElevatedButton(
-                                    onPressed: _pickImageFromCamera,
-                                    child: const Row(
-                                      children: [
-                                        Icon(Icons.photo_camera),
-                                        Text('Camera'),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: const Text('Pick Image'),
               ),
             ],
           ),
