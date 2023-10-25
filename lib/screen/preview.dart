@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:image_picker/image_picker.dart';
+// import 'package:image_cropper/image_cropper.dart';
 
 import 'package:exercises/helpers/helpers.dart';
 import 'package:exercises/screen/form.dart';
@@ -85,18 +86,39 @@ class _PreviewState extends State<Preview> {
 
     if (returnedImage == null) return;
     setState(() {
-      _selectedImage = File(returnedImage!.path);
+      _selectedImage = File(returnedImage.path);
+      Navigator.pop(context);
     });
   }
 
-  // Future _pickImageFromCamera() async {
-  //   final returnedImage =
-  //       await ImagePicker().pickImage(source: ImageSource.camera);
+  Future _pickImageFromCamera() async {
+    final returnedImage =
+        await ImagePicker().pickImage(source: ImageSource.camera);
 
-  //   if (returnedImage == null) return;
+    if (returnedImage == null) return;
+    setState(() {
+      _selectedImage = File(returnedImage.path);
+      Navigator.pop(context);
+    });
+  }
+
+  // File? _image;
+
+  // Future _pickImage(ImageSource source) async {
+  //   final image = await ImagePicker().pickImage(source: source);
+  //   if (image == null) return;
+  //   File? img = File(image.path);
+  //   img = await _cropImage(imageFile: img);
   //   setState(() {
-  //     _selectedImage = File(returnedImage!.path);
+  //     _image = img;
   //   });
+  // }
+
+  // Future<File?> _cropImage({required File imageFile}) async {
+  //   CroppedFile? croppedImage =
+  //       await ImageCropper().cropImage(sourcePath: imageFile.path);
+  //   if (croppedImage == null) return null;
+  //   return File(croppedImage.path);
   // }
 
   @override
@@ -318,8 +340,59 @@ class _PreviewState extends State<Preview> {
               ),
 
               OutlinedButton(
-                onPressed: _pickImageFromGallery,
-                child: const Text('Pick Image from Gallery'),
+                onPressed: () {
+                  showModalBottomSheet<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return SizedBox(
+                        height: 170,
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              const Padding(
+                                padding: EdgeInsets.only(bottom: 20),
+                                child: Text(
+                                  'Pick image from',
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: _pickImageFromGallery,
+                                    child: const Row(
+                                      children: [
+                                        Icon(Icons.image),
+                                        Text('Gallery'),
+                                      ],
+                                    ),
+                                  ),
+                                  const Padding(
+                                      padding:
+                                          EdgeInsets.only(right: 10, left: 10),
+                                      child: Text('Or')),
+                                  ElevatedButton(
+                                    onPressed: _pickImageFromCamera,
+                                    child: const Row(
+                                      children: [
+                                        Icon(Icons.photo_camera),
+                                        Text('Camera'),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: const Text('Pick Image'),
               ),
             ],
           ),
