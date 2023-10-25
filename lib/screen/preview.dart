@@ -155,20 +155,21 @@ class _PreviewState extends State<Preview> {
               children: [
                 SizedBox(
                   child: ClipRRect(
-                      borderRadius: BorderRadius.circular(2),
-                      child: _selectedCoverImage != null
-                          ? Image.file(
-                              _selectedCoverImage!,
-                              width: size.width,
-                              height: 220,
-                              fit: BoxFit.cover,
-                            )
-                          : Image.network(
-                              'https://images.pexels.com/photos/18096084/pexels-photo-18096084/free-photo-of-homme-mains-appareil-photo-photographe.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-                              width: size.width,
-                              height: 220,
-                              fit: BoxFit.cover,
-                            )),
+                    borderRadius: BorderRadius.circular(2),
+                    child: _selectedCoverImage != null
+                        ? Image.file(
+                            _selectedCoverImage!,
+                            width: size.width,
+                            height: 220,
+                            fit: BoxFit.cover,
+                          )
+                        : Image(
+                            image: const AssetImage('assets/images/cover.webp'),
+                            width: size.width,
+                            height: 220,
+                            fit: BoxFit.cover,
+                          ),
+                  ),
                 ),
                 Positioned(
                   right: 0,
@@ -262,9 +263,8 @@ class _PreviewState extends State<Preview> {
                           width: 135,
                           height: 135,
                           child: CircleAvatar(
-                            backgroundImage: NetworkImage(
-                              'https://images.pexels.com/photos/18250682/pexels-photo-18250682/free-photo-of-studio-portrait.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-                            ),
+                            backgroundImage:
+                                AssetImage('assets/images/profile.jpg'),
                           ),
                         ),
                   Padding(
