@@ -1,6 +1,10 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-import './form.dart';
+
+import 'package:image_picker/image_picker.dart';
+
 import 'package:exercises/helpers/helpers.dart';
+import 'package:exercises/screen/form.dart';
 
 class Preview extends StatefulWidget {
   const Preview({super.key});
@@ -73,6 +77,28 @@ class _PreviewState extends State<Preview> {
     });
   }
 
+  File? _selectedImage;
+
+  Future _pickImageFromGallery() async {
+    final returnedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (returnedImage == null) return;
+    setState(() {
+      _selectedImage = File(returnedImage!.path);
+    });
+  }
+
+  // Future _pickImageFromCamera() async {
+  //   final returnedImage =
+  //       await ImagePicker().pickImage(source: ImageSource.camera);
+
+  //   if (returnedImage == null) return;
+  //   setState(() {
+  //     _selectedImage = File(returnedImage!.path);
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -92,15 +118,29 @@ class _PreviewState extends State<Preview> {
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(top: 50),
+            Padding(
+              padding: const EdgeInsets.only(top: 50),
               child: SizedBox(
                 width: 150,
                 height: 150,
-                child: CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      'https://images.pexels.com/photos/18250682/pexels-photo-18250682/free-photo-of-studio-portrait.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
-                ),
+                child: _selectedImage != null
+                    ? CircleAvatar(
+                        child: SizedBox(
+                        width: 150,
+                        height: 150,
+                        child: ClipOval(
+                          child: Image.file(
+                            _selectedImage!,
+                            width: size.width,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ))
+                    : const CircleAvatar(
+                        backgroundImage: NetworkImage(
+                          'https://images.pexels.com/photos/18250682/pexels-photo-18250682/free-photo-of-studio-portrait.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+                        ),
+                      ),
               ),
             ),
           ],
@@ -275,6 +315,11 @@ class _PreviewState extends State<Preview> {
                 updateWeight: updateWeight,
                 updateTechnos: updateTechnos,
                 updateHobbies: updateHobbies,
+              ),
+
+              OutlinedButton(
+                onPressed: _pickImageFromGallery,
+                child: const Text('Pick Image from Gallery'),
               ),
             ],
           ),
