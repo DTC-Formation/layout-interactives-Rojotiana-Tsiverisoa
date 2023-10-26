@@ -77,7 +77,7 @@ class _MyFormState extends State<MyForm> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
-    void onSubmit() {
+    void onSubmit(BuildContext context) {
       widget.updateFirstname(firstnameController.text);
       widget.updateLastname(lastnameController.text);
       widget.updateSexe(sexeController);
@@ -86,6 +86,13 @@ class _MyFormState extends State<MyForm> {
       widget.updateWeight(weightController.text);
       widget.updateTechnos(technoController);
       widget.updateHobbies(hobbiesController);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Donnée enregistrer!'),
+          duration: Duration(seconds: 3),
+        ),
+      );
     }
 
     customInput(String label, TextEditingController controller,
@@ -455,7 +462,9 @@ class _MyFormState extends State<MyForm> {
         Align(
           alignment: Alignment.center,
           child: OutlinedButton(
-            onPressed: onSubmit,
+            onPressed: () {
+              onSubmit(context);
+            },
             child: const Text('Valider'),
           ),
         ),
