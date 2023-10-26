@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:exercises/colors/my_colors.dart';
 import 'package:flutter/material.dart';
 
 import 'package:image_picker/image_picker.dart';
@@ -168,7 +169,7 @@ class _PreviewState extends State<Preview> {
               decoration: BoxDecoration(
                 border: Border.all(
                   width: 1,
-                  color: const Color.fromARGB(118, 80, 80, 80),
+                  color: CustomColors.grey,
                 ),
                 borderRadius: const BorderRadius.all(Radius.circular(5)),
               ),

@@ -1,3 +1,4 @@
+import 'package:exercises/colors/my_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:exercises/widgets/datepicker.dart';
 import 'package:exercises/helpers/helpers.dart';
@@ -74,6 +75,8 @@ class _MyFormState extends State<MyForm> {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+
     void onSubmit() {
       widget.updateFirstname(firstnameController.text);
       widget.updateLastname(lastnameController.text);
@@ -85,6 +88,34 @@ class _MyFormState extends State<MyForm> {
       widget.updateHobbies(hobbiesController);
     }
 
+    customInput(String label, TextEditingController controller,
+        {TextInputType? keyboardType}) {
+      return Column(
+        children: [
+          TextField(
+            decoration: InputDecoration(
+              border: const OutlineInputBorder(),
+              labelText: label,
+            ),
+            controller: controller,
+            keyboardType: keyboardType,
+          ),
+          const Padding(
+            padding: EdgeInsets.only(bottom: 10),
+          ),
+        ],
+      );
+    }
+
+    customText(String text) {
+      return Text(
+        text,
+        style: const TextStyle(
+          fontSize: 17,
+        ),
+      );
+    }
+
     return Column(
       children: [
         const Text(
@@ -94,228 +125,332 @@ class _MyFormState extends State<MyForm> {
             fontSize: 18,
           ),
         ),
-        // ************** Nom **************
-        TextField(
-          decoration: const InputDecoration(
-            border: UnderlineInputBorder(),
-            labelText: 'Nom',
-          ),
-          controller: firstnameController,
-        ),
         const Padding(
           padding: EdgeInsets.only(bottom: 10),
         ),
-
-        // ************** Prénom **************
-        TextField(
-          decoration: const InputDecoration(
-            border: UnderlineInputBorder(),
-            labelText: 'Prénom',
-          ),
-          controller: lastnameController,
-        ),
-        const Padding(
-          padding: EdgeInsets.only(bottom: 10),
+        // ************** Nom & Prénom **************
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.only(right: 5),
+                child: customInput('Nom', firstnameController),
+              ),
+            ),
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 5),
+                child: customInput('Prénom', lastnameController),
+              ),
+            ),
+          ],
         ),
 
         // ************** Sexe **************
-        // Row(
-        // children: [
-        const Text('Sexe'),
-        RadioListTile<SexeChoice>(
-          title: const Text('Homme'),
-          value: SexeChoice.male,
-          groupValue: _sexe,
-          onChanged: (SexeChoice? value) {
-            setState(() {
-              _sexe = value;
-              sexeController = 'Homme';
-            });
-          },
-        ),
-        RadioListTile<SexeChoice>(
-          title: const Text('Femme'),
-          value: SexeChoice.female,
-          groupValue: _sexe,
-          onChanged: (SexeChoice? value) {
-            setState(() {
-              _sexe = value;
-              sexeController = 'Femme';
-            });
-          },
-        ),
-        // ],
-        // ),
-
-        // ************** Taille **************
-        Row(
-          children: [
-            const Text('Taille (cm)'),
-            Slider(
-              value: heightController,
-              max: 200,
-              divisions: 5,
-              label: heightController.round().toString(),
-              onChanged: (double value) {
-                setState(() {
-                  heightController = value;
-                });
-              },
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: CustomColors.grey,
+              width: 1,
             ),
-          ],
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(
+              left: 8,
+              right: 8,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                customText('Sexe'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 5),
+                        child: RadioListTile<SexeChoice>(
+                          title: const Text('Homme'),
+                          value: SexeChoice.male,
+                          groupValue: _sexe,
+                          onChanged: (SexeChoice? value) {
+                            setState(() {
+                              _sexe = value;
+                              sexeController = 'Homme';
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                    Flexible(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 5),
+                        child: RadioListTile<SexeChoice>(
+                          title: const Text('Femme'),
+                          value: SexeChoice.female,
+                          groupValue: _sexe,
+                          onChanged: (SexeChoice? value) {
+                            setState(() {
+                              _sexe = value;
+                              sexeController = 'Femme';
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+        const Padding(
+          padding: EdgeInsets.only(bottom: 10),
+        ),
+        // ************** Taille **************
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: CustomColors.grey,
+              width: 1,
+            ),
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(
+              left: 5,
+            ),
+            child: Row(
+              children: [
+                customText('Taille (cm)'),
+                Flexible(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 5),
+                    child: SizedBox(
+                      width: size.width,
+                      child: Slider(
+                        value: heightController,
+                        max: 200,
+                        divisions: 5,
+                        label: heightController.round().toString(),
+                        onChanged: (double value) {
+                          setState(() {
+                            heightController = value;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const Padding(
+          padding: EdgeInsets.only(bottom: 10),
         ),
         // ************** Date de naissance **************
-        Row(
-          children: [
-            const Text('Date de naissance'),
-            MyDatePicker(
-              updateDatePicker: updateDatePicker,
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: CustomColors.grey,
+              width: 1,
             ),
-            Text(birthdayController),
-          ],
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 5),
+                    child: customText('Date de naissance'),
+                  ),
+                ),
+                Flexible(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 5),
+                    child: Text(birthdayController),
+                  ),
+                ),
+                Flexible(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 5),
+                    child: MyDatePicker(
+                      updateDatePicker: updateDatePicker,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
         const Padding(
           padding: EdgeInsets.only(bottom: 10),
         ),
         // ************** Poids **************
-        TextField(
-          decoration: const InputDecoration(
-            border: UnderlineInputBorder(),
-            labelText: 'Poids (Kg)',
-          ),
-          controller: weightController,
+        customInput(
+          'Poids (Kg)',
+          weightController,
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        ),
+        // ************** Loisirs **************
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: CustomColors.grey,
+              width: 1,
+            ),
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(5),
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: customText('Loisirs'),
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Row(
+                    children: [
+                      Checkbox(
+                        checkColor: Colors.white,
+                        value: swimmingIsChecked,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            swimmingIsChecked = value!;
+                            updateCheckedHobbies();
+                          });
+                        },
+                      ),
+                      const Text('Nager'),
+                    ],
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Row(
+                    children: [
+                      Checkbox(
+                        checkColor: Colors.white,
+                        value: watchingTvIsChecked,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            watchingTvIsChecked = value!;
+                            updateCheckedHobbies();
+                          });
+                        },
+                      ),
+                      const Text('Regarder la télé'),
+                    ],
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Row(
+                    children: [
+                      Checkbox(
+                        checkColor: Colors.white,
+                        value: gamingIsChecked,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            gamingIsChecked = value!;
+                            updateCheckedHobbies();
+                          });
+                        },
+                      ),
+                      const Text('Jouer aux jeux vidéo'),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
         const Padding(
           padding: EdgeInsets.only(bottom: 10),
         ),
-
-        // ************** Loisirs **************
-        Column(
-          children: [
-            const Align(
-              alignment: Alignment.topLeft,
-              child: Text('Loisirs'),
-            ),
-            Align(
-              alignment: Alignment.topLeft,
-              child: Row(
-                children: [
-                  Checkbox(
-                    checkColor: Colors.white,
-                    value: swimmingIsChecked,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        swimmingIsChecked = value!;
-                        updateCheckedHobbies();
-                      });
-                    },
-                  ),
-                  const Text('Nager'),
-                ],
-              ),
-            ),
-            Align(
-              alignment: Alignment.topLeft,
-              child: Row(
-                children: [
-                  Checkbox(
-                    checkColor: Colors.white,
-                    value: watchingTvIsChecked,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        watchingTvIsChecked = value!;
-                        updateCheckedHobbies();
-                      });
-                    },
-                  ),
-                  const Text('Regarder la télé'),
-                ],
-              ),
-            ),
-            Align(
-              alignment: Alignment.topLeft,
-              child: Row(
-                children: [
-                  Checkbox(
-                    checkColor: Colors.white,
-                    value: gamingIsChecked,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        gamingIsChecked = value!;
-                        updateCheckedHobbies();
-                      });
-                    },
-                  ),
-                  const Text('Jouer aux jeux vidéo'),
-                ],
-              ),
-            ),
-          ],
-        ),
-
         // ************** Technos **************
-        Column(
-          children: [
-            const Align(
-              alignment: Alignment.topLeft,
-              child: Text('Technos'),
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: CustomColors.grey,
+              width: 1,
             ),
-            Align(
-              alignment: Alignment.topLeft,
-              child: Row(
-                children: [
-                  Checkbox(
-                    checkColor: Colors.white,
-                    value: flutterIsChecked,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        flutterIsChecked = value!;
-                        updateCheckedTechnos();
-                      });
-                    },
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(5),
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: customText('Technos'),
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Row(
+                    children: [
+                      Checkbox(
+                        checkColor: Colors.white,
+                        value: flutterIsChecked,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            flutterIsChecked = value!;
+                            updateCheckedTechnos();
+                          });
+                        },
+                      ),
+                      const Text('Flutter'),
+                    ],
                   ),
-                  const Text('Flutter'),
-                ],
-              ),
-            ),
-            Align(
-              alignment: Alignment.topLeft,
-              child: Row(
-                children: [
-                  Checkbox(
-                    checkColor: Colors.white,
-                    value: javascriptIsChecked,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        javascriptIsChecked = value!;
-                        updateCheckedTechnos();
-                      });
-                    },
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Row(
+                    children: [
+                      Checkbox(
+                        checkColor: Colors.white,
+                        value: javascriptIsChecked,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            javascriptIsChecked = value!;
+                            updateCheckedTechnos();
+                          });
+                        },
+                      ),
+                      const Text('Javascript'),
+                    ],
                   ),
-                  const Text('Javascript'),
-                ],
-              ),
-            ),
-            Align(
-              alignment: Alignment.topLeft,
-              child: Row(
-                children: [
-                  Checkbox(
-                    checkColor: Colors.white,
-                    value: phpIsChecked,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        phpIsChecked = value!;
-                        updateCheckedTechnos();
-                      });
-                    },
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Row(
+                    children: [
+                      Checkbox(
+                        checkColor: Colors.white,
+                        value: phpIsChecked,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            phpIsChecked = value!;
+                            updateCheckedTechnos();
+                          });
+                        },
+                      ),
+                      const Text('PHP'),
+                    ],
                   ),
-                  const Text('PHP'),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
         Align(
           alignment: Alignment.center,
