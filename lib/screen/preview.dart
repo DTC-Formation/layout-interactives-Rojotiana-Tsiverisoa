@@ -335,7 +335,7 @@ class _PreviewState extends State<Preview> {
               customInput('Prénom', lastnameController),
               customInput('Age', age),
               customInput('Sexe', sexeController),
-              customInput('Taille (cm)', heightController.toString()),
+              customInput('Taille (cm)', heightController.toStringAsFixed(0)),
               customInput(
                 'Liste des technologies',
                 technoController.join(', '),

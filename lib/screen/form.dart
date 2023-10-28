@@ -232,7 +232,7 @@ class _MyFormState extends State<MyForm> {
             ),
             child: Row(
               children: [
-                customText('Taille (cm)'),
+                customText('Taille (${heightController.toInt()} cm)'),
                 Flexible(
                   child: Padding(
                     padding: const EdgeInsets.only(left: 5),
@@ -240,8 +240,9 @@ class _MyFormState extends State<MyForm> {
                       width: size.width,
                       child: Slider(
                         value: heightController,
+                        min: 0,
                         max: 200,
-                        divisions: 5,
+                        // divisions: 5,
                         label: heightController.round().toString(),
                         onChanged: (double value) {
                           setState(() {
